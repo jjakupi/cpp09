@@ -17,7 +17,8 @@ class BitcoinExchange
 		void processLine(const std::string& line);
 		std::string trim(const std::string& str);
 		bool isValidDate(const std::string& date);
-		
+		bool findExchangeRate(const std::string& date, double& rate)const;
+
 	public:
 		BitcoinExchange();
 		BitcoinExchange(const BitcoinExchange& other);
@@ -26,6 +27,7 @@ class BitcoinExchange
 
 		bool loadDatabase(const std::string& filename);
 		bool processInputFile(const std::string& filename);
+
 };
 
 #endif

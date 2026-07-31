@@ -179,6 +179,15 @@ void BitcoinExchange::processLine(const std::string& line)
 		std::cerr << "Error: too large a number." << std::endl;
 		return;
 	}
+	double rate;
+
+	if (!findExchangeRate(date, rate))
+	{
+		std::cerr << "Error: no exchange rate available for date => " << date << std::endl;
+		return;
+	}
+	double result = value * rate;
+	std::cout << date << " => " << value << " = " << result << std::endl;
 }
 
 std::string BitcoinExchange::trim(const std::string& str)
@@ -190,4 +199,33 @@ std::string BitcoinExchange::trim(const std::string& str)
 	std::size_t last = str.find_last_not_of(" \t\r");
 
 	return (str.substr(first, last - first + 1));
+}
+
+bool BitcoinExchange::findExchangeRate(const std::string& date, double& rate) const
+{
+	if (_database.empty())
+		return (false);
+
+	std::map<std::string, double>::const_iterator it;
+	it = _database.lower_bound(date);
+
+	if (it == _database.end())
+	{
+		--it;
+		rate = it->second;
+		return (true);
+	}
+
+	if (it->first == date)
+	{
+		rate = it->second;
+		return (true);
+	}
+
+	if (it == _database.begin())
+		return (false);
+
+	--it;
+	rate = it->second;
+	return (true);
 }
