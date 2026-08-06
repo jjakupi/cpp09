@@ -43,14 +43,57 @@ PmergeMe::~PmergeMe()
 
 void PmergeMe::sortVector()
 {
+	struct timeval start;
+	struct timeval end;
+
+	gettimeofday(&start, NULL);
 	fordJohnsonVector(_vector);
+	gettimeofday(&end, NULL);
+	_vectorTime = (end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
+
+	std::cout << std::endl;
+	std::cout << "Vector after sorting: " << std::endl;;
+	for (std::size_t i = 0; i < _vector.size(); ++i)
+		std::cout << _vector[i] << " ";
+	std::cout << std::endl;
 }
 
 void PmergeMe::sortDeque()
 {
+	struct timeval start;
+	struct timeval end;
+
+	gettimeofday(&start, NULL);
 	fordJohnsonDeque(_deque);
+	gettimeofday(&end, NULL);
+	_dequeTime = (end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
+	std::cout << std::endl;
+	std::cout << "Deque after sorting: " << std::endl;;
+	for (std::size_t i = 0; i < _deque.size(); ++i)
+		std::cout << _deque[i] << " ";
+	std::cout << std::endl;
 }
 
+void PmergeMe::printTimeVector() const
+{
+	std::cout << ">>Time to process a range of "
+			  << _vector.size()
+			  << " elements with std::vector : "
+			  << _vectorTime
+			  << " us<<"
+			  << std::endl;
+	std::cout << std::endl;
+}
+
+void PmergeMe::printTimeDeque() const
+{
+	std::cout << ">>Time to process a range of "
+			  << _deque.size()
+			  << " elements with std::deque : "
+			  << _dequeTime
+			  << " us<<"
+			  << std::endl;
+}
 
 void PmergeMe::parseArguments(int argc, char **argv)
 {
@@ -81,7 +124,7 @@ void PmergeMe::parseArguments(int argc, char **argv)
 
 void PmergeMe::printContainerVector() const
 {
-	std::cout << "Vector before: ";
+	std::cout << "Vector before: " << std::endl;
 	for(size_t i = 0; i < _vector.size(); i++)
 	{
 		std::cout << _vector[i] << " ";
@@ -92,7 +135,7 @@ void PmergeMe::printContainerVector() const
 void PmergeMe::printContainerDeque() const
 {
 	std::cout << std::endl;
-	std::cout << "Deque before: ";
+	std::cout << "Deque before: " << std::endl;
 	for(size_t j = 0; j < _deque.size(); j++)
 	{
 		std::cout << _deque[j] << " ";
@@ -117,13 +160,7 @@ void PmergeMe::fordJohnsonVector(std::vector<int> &numbers)
 		int big = second;
 		pairs.push_back(std::make_pair(small, big));
 	}
-	std::cout << std::endl;
-	std::cout << "Pairs: ";
 
-	for (std::size_t j = 0; j < pairs.size(); ++j)
-	{
-		std::cout << "(" << pairs[j].first << ", " << pairs[j].second << ") ";
-	}
 	bool hasStraggler = false;
 	int straggler = 0;
 
@@ -131,32 +168,14 @@ void PmergeMe::fordJohnsonVector(std::vector<int> &numbers)
 	{
 		hasStraggler = true;
 		straggler = numbers.back();
-
-		std::cout << std::endl;
-		//std::cout << "Straggler: " << straggler;
 	}
-	std::cout << std::endl;
-	//std::cout << "------------------------------------------------" << std::endl;
 	std::vector<int> bigNumbers;
-	// std::cout << "BigNumbers: ";
 	for(size_t j = 0; j < pairs.size(); j++)
 	{
 		bigNumbers.push_back(pairs[j].second);
-	// 	std::cout << bigNumbers[j]<< " ";
 	 }
-//	std::cout << std::endl;
 	fordJohnsonVector(bigNumbers);
-
-	std::cout << std::endl;
-	// std::cout << "BigNumbers after recursion:=";
-
-	// for (std::size_t j = 0; j < bigNumbers.size(); ++j)
-	// std::cout << bigNumbers[j] << " ";
-	// std::cout << std::endl;
-
 	std::vector<int> mainChain;
-
-	std::cout << std::endl;
 	std::vector<std::pair<int, int> >orderedPairs;
 	for(size_t i = 0; i < bigNumbers.size(); i++)
 	{
@@ -171,10 +190,7 @@ void PmergeMe::fordJohnsonVector(std::vector<int> &numbers)
 		}
 	}
 	pairs = orderedPairs;
-	//std::cout << std::endl;
-	//std::cout << "ADDING: " << pairs[0].first;
 	mainChain.push_back(pairs[0].first);
-	std::cout << std::endl;
 	for(std::size_t i = 0; i < bigNumbers.size(); i++)
 	{
 		mainChain.push_back(bigNumbers[i]);
@@ -182,18 +198,11 @@ void PmergeMe::fordJohnsonVector(std::vector<int> &numbers)
 	insertPendingVector(mainChain, orderedPairs);
 	if (hasStraggler)
 	{
-		//std::cout << "Inserting straggler: " << straggler << std::endl;
+
 		std::vector<int>::iterator position = std::lower_bound(mainChain.begin(), mainChain.end(),straggler);
 		mainChain.insert(position, straggler);
 	}
-	std::cout << std::endl;
 	numbers = mainChain;
-	std::cout << std::endl;
-	for(std::size_t i = 0; i < numbers.size(); i++)
-	{
-		std::cout << numbers[i] << "-";
-	}
-	 std::cout << std::endl;
 }
 
 void PmergeMe::insertPendingVector(std::vector<int> &mainChain, const std::vector<std::pair<int, int> > &orderedPairs)
@@ -226,8 +235,6 @@ void PmergeMe::insertPendingVector(std::vector<int> &mainChain, const std::vecto
 				return;
 			}
 			std::vector<int>::iterator position = std::lower_bound(mainChain.begin(), partnerIt, pending);
-
-			//std::cerr << "Inserting the pending " << pending << std::endl;
 			mainChain.insert(position, pending);
 
 			if (i == groupStart)
@@ -256,13 +263,6 @@ void PmergeMe::fordJohnsonDeque(std::deque<int> &numbers)
 		int big = second;
 		pairs.push_back(std::make_pair(small, big));
 	}
-	std::cout << std::endl;
-	std::cout << "Deque-Pairs: ";
-
-	for (std::size_t j = 0; j < pairs.size(); ++j)
-	{
-		std::cout << "(" << pairs[j].first << ", " << pairs[j].second << ") ";
-	}
 	bool hasStraggler = false;
 	int straggler = 0;
 
@@ -270,32 +270,14 @@ void PmergeMe::fordJohnsonDeque(std::deque<int> &numbers)
 	{
 		hasStraggler = true;
 		straggler = numbers.back();
-
-		// std::cout << std::endl;
-		// std::cout << "Deque-Straggler: " << straggler;
 	}
-	std::cout << std::endl;
-	//std::cout << "------------------------------------------------" << std::endl;
 	std::vector<int> bigNumbers;
-	//std::cout << "Deque-BigNumbers: ";
 	for(size_t j = 0; j < pairs.size(); j++)
 	{
 		bigNumbers.push_back(pairs[j].second);
-		//std::cout << bigNumbers[j]<< " ";
 	}
-	std::cout << std::endl;
 	fordJohnsonVector(bigNumbers);
-
-	std::cout << std::endl;
-	//std::cout << "Deque-BigNumbers after recursion:=";
-
-	//for (std::size_t j = 0; j < bigNumbers.size(); ++j)
-//	std::cout << bigNumbers[j] << " ";
-	std::cout << std::endl;
-
 	std::deque<int> mainChain;
-
-	std::cout << std::endl;
 	std::deque<std::pair<int, int> >orderedPairs;
 	for(size_t i = 0; i < bigNumbers.size(); i++)
 	{
@@ -310,10 +292,7 @@ void PmergeMe::fordJohnsonDeque(std::deque<int> &numbers)
 		}
 	}
 	pairs = orderedPairs;
-	std::cout << std::endl;
-	//std::cout << "deque-ADDING: " << pairs[0].first;
 	mainChain.push_back(pairs[0].first);
-	std::cout << std::endl;
 	for(std::size_t i = 0; i < bigNumbers.size(); i++)
 	{
 		mainChain.push_back(bigNumbers[i]);
@@ -321,18 +300,10 @@ void PmergeMe::fordJohnsonDeque(std::deque<int> &numbers)
 	insertPendingDeque(mainChain, orderedPairs);
 	if (hasStraggler)
 	{
-		//std::cout << "Deque-Inserting straggler: " << straggler << std::endl;
 		std::deque<int>::iterator position = std::lower_bound(mainChain.begin(), mainChain.end(),straggler);
 		mainChain.insert(position, straggler);
 	}
-	std::cout << std::endl;
 	numbers = mainChain;
-	std::cout << std::endl;
-	for(std::size_t i = 0; i < numbers.size(); i++)
-	{
-		std::cout << numbers[i] << "-";
-	}
-	 std::cout << std::endl;
 }
 
 void PmergeMe::insertPendingDeque(std::deque<int> &mainChain, const std::deque<std::pair<int, int> > &orderedPairs)
@@ -365,8 +336,6 @@ void PmergeMe::insertPendingDeque(std::deque<int> &mainChain, const std::deque<s
 				return;
 			}
 			std::deque<int>::iterator position = std::lower_bound(mainChain.begin(), partnerIt, pending);
-
-		//	std::cerr << "Deque-Inserting the pending " << pending << std::endl;
 			mainChain.insert(position, pending);
 
 			if (i == groupStart)

@@ -6,14 +6,14 @@ int main(int argc, char **argv)
 {
 	try
 	{
-		PmergeMe test(argc, argv);
-		PmergeMe objekt(argc, argv);
-			objekt.printContainerVector();
-			test.sortVector();
-		PmergeMe test1(argc, argv);
-		PmergeMe objekt1(argc, argv);
-			objekt1.printContainerDeque();
-			test1.sortDeque();
+		PmergeMe object(argc, argv);
+			object.printContainerVector();
+			object.sortVector();
+			object.printTimeVector();
+		PmergeMe object1(argc, argv);
+			object1.printContainerDeque();
+			object1.sortDeque();
+			object1.printTimeDeque();
 	}
 	catch (const std::exception &e)
 	{

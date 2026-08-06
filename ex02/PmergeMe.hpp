@@ -5,14 +5,16 @@
 #include <deque>
 #include <string>
 #include <cstddef>
-#include <ctime>
+#include <sys/time.h>
 
 class PmergeMe
 {
 	private:
-		std::vector<int> _input;
-		std::vector<int> _vector;
-		std::deque<int> _deque;
+		std::vector<int>	_input;
+		std::vector<int>	_vector;
+		std::deque<int>		_deque;
+		double				_vectorTime;
+		double 				_dequeTime;
 
 		void	parseArguments(int argc, char **argv);
 
@@ -28,12 +30,13 @@ class PmergeMe
 		PmergeMe(const PmergeMe &other);
 		PmergeMe &operator=(const PmergeMe &other);
 		~PmergeMe();
-
+		void	printTimeVector() const;
 		void	printContainerVector() const;
 		void	sortVector();
 //-------------------------------------------------------------------------------------------------------------------------------
 		void	printContainerDeque() const;
 		void	sortDeque();
+		void	printTimeDeque() const;
 };
 
 #endif
