@@ -1,0 +1,39 @@
+#ifndef PMERGEME_HPP
+#define PMERGEME_HPP
+
+#include <vector>
+#include <deque>
+#include <string>
+#include <cstddef>
+#include <ctime>
+
+class PmergeMe
+{
+	private:
+		std::vector<int> _input;
+		std::vector<int> _vector;
+		std::deque<int> _deque;
+
+		void	parseArguments(int argc, char **argv);
+
+		void	fordJohnsonVector(std::vector<int> &numbers);
+		void	insertPendingVector(std::vector<int> &mainChain, const std::vector<std::pair<int, int> > &orderedPairs);
+//------------------------------------------------------------------------------------------------------------------------------
+		void	fordJohnsonDeque(std::deque<int> &numbers);
+		void	insertPendingDeque(std::deque<int> &mainChain, const std::deque<std::pair<int, int> > &orderedPairs);
+
+	public:
+		PmergeMe();
+		PmergeMe(int argc, char **argv);
+		PmergeMe(const PmergeMe &other);
+		PmergeMe &operator=(const PmergeMe &other);
+		~PmergeMe();
+
+		void	printContainerVector() const;
+		void	sortVector();
+//-------------------------------------------------------------------------------------------------------------------------------
+		void	printContainerDeque() const;
+		void	sortDeque();
+};
+
+#endif
