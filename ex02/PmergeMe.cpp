@@ -52,10 +52,9 @@ void PmergeMe::sortVector()
 	_vectorTime = (end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
 
 	std::cout << std::endl;
-	std::cout << GREEN << "After: ";
+	std::cout << BOLD << GREEN << "After: " << RESET;
 	for (std::size_t i = 0; i < _vector.size(); ++i)
 		std::cout << _vector[i] << " ";
-	std::cout << RESET;
 	std::cout << std::endl;
 	std::cout << std::endl;
 }
@@ -120,12 +119,11 @@ void PmergeMe::parseArguments(int argc, char **argv)
 
 void PmergeMe::printContainerVector() const
 {
-	std::cout << RED << "Before: ";
+	std::cout << BOLD << RED << "Before: " << RESET;
 	for(size_t i = 0; i < _vector.size(); i++)
 	{
 		std::cout << _vector[i] << " ";
 	}
-	std::cout << RESET;
 }
 
 void PmergeMe::fordJohnsonVector(std::vector<int> &numbers)
