@@ -11,7 +11,6 @@ int main(int argc, char **argv)
 			object.sortVector();
 			object.printTimeVector();
 		PmergeMe object1(argc, argv);
-			object1.printContainerDeque();
 			object1.sortDeque();
 			object1.printTimeDeque();
 	}

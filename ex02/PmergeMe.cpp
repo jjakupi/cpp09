@@ -52,9 +52,11 @@ void PmergeMe::sortVector()
 	_vectorTime = (end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
 
 	std::cout << std::endl;
-	std::cout << "Vector after sorting: " << std::endl;;
+	std::cout << GREEN << "After: ";
 	for (std::size_t i = 0; i < _vector.size(); ++i)
 		std::cout << _vector[i] << " ";
+	std::cout << RESET;
+	std::cout << std::endl;
 	std::cout << std::endl;
 }
 
@@ -68,30 +70,24 @@ void PmergeMe::sortDeque()
 	gettimeofday(&end, NULL);
 	_dequeTime = (end.tv_sec - start.tv_sec) * 1000000.0 + (end.tv_usec - start.tv_usec);
 	std::cout << std::endl;
-	std::cout << "Deque after sorting: " << std::endl;;
-	for (std::size_t i = 0; i < _deque.size(); ++i)
-		std::cout << _deque[i] << " ";
-	std::cout << std::endl;
 }
 
 void PmergeMe::printTimeVector() const
 {
-	std::cout << ">>Time to process a range of "
+	std::cout << "Time to process a range of "
 			  << _vector.size()
 			  << " elements with std::vector : "
 			  << _vectorTime
-			  << " us<<"
-			  << std::endl;
-	std::cout << std::endl;
+			  << " us";
 }
 
 void PmergeMe::printTimeDeque() const
 {
-	std::cout << ">>Time to process a range of "
+	std::cout << "Time to process a range of "
 			  << _deque.size()
 			  << " elements with std::deque : "
 			  << _dequeTime
-			  << " us<<"
+			  << " us"
 			  << std::endl;
 }
 
@@ -124,25 +120,13 @@ void PmergeMe::parseArguments(int argc, char **argv)
 
 void PmergeMe::printContainerVector() const
 {
-	std::cout << "Vector before: " << std::endl;
+	std::cout << RED << "Before: ";
 	for(size_t i = 0; i < _vector.size(); i++)
 	{
 		std::cout << _vector[i] << " ";
 	}
-	std::cout << std::endl;
+	std::cout << RESET;
 }
-
-void PmergeMe::printContainerDeque() const
-{
-	std::cout << std::endl;
-	std::cout << "Deque before: " << std::endl;
-	for(size_t j = 0; j < _deque.size(); j++)
-	{
-		std::cout << _deque[j] << " ";
-	}
-	std::cout << std::endl;
-}
-
 
 void PmergeMe::fordJohnsonVector(std::vector<int> &numbers)
 {
