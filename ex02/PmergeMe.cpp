@@ -208,10 +208,11 @@ void PmergeMe::insertPendingVector(std::vector<int> &mainChain, const std::vecto
 			int pending = orderedPairs[i - 1].first;
 			int partner = orderedPairs[i - 1].second;
 
-			std::vector<int>::iterator partnerIt =
-				std::find(mainChain.begin(), mainChain.end(), partner);
-
-			if (partnerIt == mainChain.end())
+			// std::vector<int>::iterator partnerIt =
+			// 	std::find(mainChain.begin(), mainChain.end(), partner);
+			 std::vector<int>::iterator partnerIt =
+    		 	std::lower_bound(mainChain.begin(), mainChain.end(), partner);
+			if (partnerIt == mainChain.end()|| *partnerIt != partner)
 			{
 				std::cerr << "Error: partner not found" << std::endl;
 				return;

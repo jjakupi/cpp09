@@ -77,7 +77,7 @@ bool RPN::evaluate(const std::string& expression, int& result)
 
 	while(stream >> token)
 	{
-		if(token[0] == 1 && std::isdigit(token[0]))
+		if(token.size() == 1 && std::isdigit(token[0]))
 		{
 			int number = token[0] - '0';
 			_numbers.push(number);
