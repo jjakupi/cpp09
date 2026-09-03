@@ -92,7 +92,6 @@ void PmergeMe::printTimeDeque() const
 
 void PmergeMe::parseArguments(int argc, char **argv)
 {
-	(void)argv;
 	if (argc < 2)
 		throw std::runtime_error("Error");
 
@@ -171,8 +170,8 @@ void PmergeMe::fordJohnsonVector(std::vector<int> &numbers)
 			}
 		}
 	}
-	pairs = orderedPairs;
-	mainChain.push_back(pairs[0].first);
+	//pairs = orderedPairs;
+	mainChain.push_back(orderedPairs[0].first);
 	for(std::size_t i = 0; i < bigNumbers.size(); i++)
 	{
 		mainChain.push_back(bigNumbers[i]);
@@ -208,8 +207,6 @@ void PmergeMe::insertPendingVector(std::vector<int> &mainChain, const std::vecto
 			int pending = orderedPairs[i - 1].first;
 			int partner = orderedPairs[i - 1].second;
 
-			// std::vector<int>::iterator partnerIt =
-			// 	std::find(mainChain.begin(), mainChain.end(), partner);
 			 std::vector<int>::iterator partnerIt =
     		 	std::lower_bound(mainChain.begin(), mainChain.end(), partner);
 			if (partnerIt == mainChain.end()|| *partnerIt != partner)
